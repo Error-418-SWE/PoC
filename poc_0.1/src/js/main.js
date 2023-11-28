@@ -29,7 +29,11 @@ scene.add(gridHelper);
 const gui = new dat.GUI();
 
 //mesh scaffale
-const box = new THREE.Mesh( new THREE.BoxGeometry(1,1,1), new THREE.MeshBasicMaterial( { color: 0xBE7363 } ));
+boxGeometry = new THREE.BoxGeometry(1,1,1);
+const box = new THREE.Mesh( boxGeometry, new THREE.MeshBasicMaterial( { color: 0xBE7363 } ));
+const edges = new THREE.EdgesGeometry( boxGeometry ); 
+const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x000000 })); 
+box.add(line);
 
 let isScaffaleDaPosizionare = false;
 let ancoredObject;
