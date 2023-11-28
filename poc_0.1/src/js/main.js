@@ -87,6 +87,23 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
+let intersects;
+window.addEventListener('mousedown',function(){
+        if(isScaffaleDaPosizionare){
+            raycaster.setFromCamera(mousePosition,camera);
+            intersects = raycaster.intersectObjects(scene.children);
+            intersects.forEach(function(intersect){
+                if(intersect.object.name === 'ground'){
+                    const nuovoBlocco = ancoredObject.clone();
+                    scene.add(nuovoBlocco);
+                    removeMouseAnchor();
+                    nuovoBlocco.position.copy(intersect.point).floor().addScalar(0.5);
+                    nuovoBlocco.position.y = 0.5;
+                }
+            });
+        }
+});
+
 
 document.addEventListener('mousedown', function(event) {
     if (isScaffaleDaPosizionare){
