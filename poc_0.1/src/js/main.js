@@ -29,11 +29,15 @@ scene.add(gridHelper);
 const gui = new dat.GUI();
 
 //mesh scaffale
-boxGeometry = new THREE.BoxGeometry(1,1,1);
-const box = new THREE.Mesh( boxGeometry, new THREE.MeshBasicMaterial( { color: 0xBE7363 } ));
-const edges = new THREE.EdgesGeometry( boxGeometry ); 
-const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x000000 })); 
-box.add(line);
+function creaScaffale(larghezza, altezza, profondita){
+    const boxGeometry = new THREE.BoxGeometry(larghezza, altezza, profondita);
+    const boxMaterial = new THREE.MeshBasicMaterial({ color: 0xBE7363 });
+    const box = new THREE.Mesh( boxGeometry,boxMaterial);
+    const edges = new THREE.EdgesGeometry( boxGeometry ); 
+    const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x000000 })); 
+    box.add(line);
+    return box;
+}
 
 // var
 let isScaffaleDaPosizionare = false;
@@ -43,6 +47,16 @@ const intersectionPoint = new THREE.Vector3();
 const planeNormal = new THREE.Vector3();
 const plane2 = new THREE.Plane();
 const raycaster = new THREE.Raycaster();
+
+
+// Aggiungi campi di input per larghezza, altezza e profondità nella GUI
+const boxDimensions = { larghezza: 1, altezza: 1, profondita: 1 };
+const folder = gui.addFolder('Dimensioni Scaffale');
+folder.add(boxDimensions, 'larghezza', 1, 10).step(1).name('Larghezza');
+folder.add(boxDimensions, 'altezza', 1, 10).step(1).name('Altezza');
+folder.add(boxDimensions, 'profondita', 1, 10).step(1).name('Profondità');
+folder.open();
+
 
 // funzione che ritorna una posizione nell'ambiente di lavoro (3d) data la posizione del mouse (2d)
 function getMouse3DPos(){
@@ -55,7 +69,8 @@ function getMouse3DPos(){
 
 var obj = { 
     'Crea scaffale':function(){ 
-        const nuovoScaffale = box.clone();
+        //const nuovoScaffale = box.clone();
+        const nuovoScaffale = creaScaffale(boxDimensions.larghezza ,boxDimensions.altezza ,boxDimensions.profondita);
         scene.add( nuovoScaffale );
         isScaffaleDaPosizionare = true;
         ancoredObject = nuovoScaffale;
@@ -71,7 +86,7 @@ function hoverGround(intersects){
     intersects.forEach(function(intersect){
         if(intersect.object.name === 'ground'){
         ancoredObject.position.copy(intersect.point).floor().addScalar(0.5);
-        ancoredObject.position.y = 0.5;
+        ancoredObject.position.y = ancoredObject.geometry.parameters.height / 2 ;
         isIntersectionFound = true;
         }
     });
@@ -90,7 +105,6 @@ window.addEventListener('mousemove',function(e){
         ancoredObject.position.copy(getMouse3DPos());
     }  
 });
-
 
 function removeMouseAnchor(){
     isScaffaleDaPosizionare = false;
@@ -124,10 +138,7 @@ window.addEventListener('mousedown',function(){
                 if(intersect.object.name === 'ground'){
                     const nuovoBlocco = ancoredObject.clone();
                     scene.add(nuovoBlocco);
-                    removeMouseAnchor();
-                    nuovoBlocco.position.copy(intersect.point).floor().addScalar(0.5);
-                    nuovoBlocco.position.y = 0.5;
-                }
+                    removeMouseAnchor();                }
             });
         }
 });
