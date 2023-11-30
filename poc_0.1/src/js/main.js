@@ -35,6 +35,7 @@ const edges = new THREE.EdgesGeometry( boxGeometry );
 const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x000000 })); 
 box.add(line);
 
+// var
 let isScaffaleDaPosizionare = false;
 let ancoredObject;
 const mousePosition = new THREE.Vector2();
@@ -43,6 +44,7 @@ const planeNormal = new THREE.Vector3();
 const plane2 = new THREE.Plane();
 const raycaster = new THREE.Raycaster();
 
+// funzione che ritorna una posizione nell'ambiente di lavoro (3d) data la posizione del mouse (2d)
 function getMouse3DPos(){
     planeNormal.copy(camera.position).normalize();
     plane2.setFromNormalAndCoplanarPoint(planeNormal, scene.position);
@@ -50,7 +52,6 @@ function getMouse3DPos(){
     raycaster.ray.intersectPlane(plane2, intersectionPoint);
     return intersectionPoint;
 }
-
 
 var obj = { 
     'Crea scaffale':function(){ 
@@ -64,21 +65,39 @@ var obj = {
 
 gui.add(obj,'Crea scaffale');
 
+// funzione che posiziona ancoredObject alla posizione corrispondente nel piano se si passa con il mouse sopra ad esso 
+function hoverGround(intersects){
+    let isIntersectionFound = false;
+    intersects.forEach(function(intersect){
+        if(intersect.object.name === 'ground'){
+        ancoredObject.position.copy(intersect.point).floor().addScalar(0.5);
+        ancoredObject.position.y = 0.5;
+        isIntersectionFound = true;
+        }
+    });
+    return isIntersectionFound;
+}
+// allo spostamento del mouse:
 window.addEventListener('mousemove',function(e){
     mousePosition.x = (e.clientX / window.innerWidth) * 2 - 1;
     mousePosition.y = -(e.clientY / window.innerHeight) * 2 + 1;
     if (isScaffaleDaPosizionare){
-        
+        raycaster.setFromCamera(mousePosition,camera);
+        intersects = raycaster.intersectObjects(scene.children);
+        if(hoverGround(intersects)){
+            return;
+        }
         ancoredObject.position.copy(getMouse3DPos());
     }  
 });
+
 
 function removeMouseAnchor(){
     isScaffaleDaPosizionare = false;
     scene.remove(ancoredObject);
 }
 
-
+// se si preme backspace, canc, esc o il tasto destro del mouse viene rimossa l'ancora
 document.addEventListener('keydown', function(event) {
     if (isScaffaleDaPosizionare){
         if (event.key === "Delete" || event.key === "Backspace" || event.key === "Escape" || event.button === 2)  {
@@ -87,6 +106,15 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
+document.addEventListener('mousedown', function(event) {
+    if (isScaffaleDaPosizionare){
+        if ( event.button === 2)  {
+            removeMouseAnchor();
+        }
+    }
+});
+
+// quando si preme il mouse sx:
 let intersects;
 window.addEventListener('mousedown',function(){
         if(isScaffaleDaPosizionare){
@@ -105,15 +133,6 @@ window.addEventListener('mousedown',function(){
 });
 
 
-document.addEventListener('mousedown', function(event) {
-    if (isScaffaleDaPosizionare){
-        if ( event.button === 2)  {
-            removeMouseAnchor();
-        }
-    }
-});
-
-
 function animate(time) {
     renderer.render( scene, camera );
 }
@@ -125,4 +144,4 @@ window.addEventListener('resize', function(){
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize( window.innerWidth, window.innerHeight );
-});
+}); 
