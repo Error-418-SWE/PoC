@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css"> 
+    <script type="module" src="./main.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <button id="manualCreation">Manual Creation</button>
+    <button id="importSvg">Import SVG</button>
+
+    <div id="modalDimensions" class="modal">
+        <div class="modal-content">
+          <label for="dimension1">Dimension 1:</label><br>
+          <input type="number" id="dimension1" name="dimension1"><br>
+          <label for="dimension2">Dimension 2:</label><br>
+          <input type="number" id="dimension2" name="dimension2"><br>
+          <div id="buttonContainer">
+            <button id="backButton">Cancel</button>
+            <button id="submitDimensions">Submit</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="svgModal" class="modal">
+        <div class="modal-content">
+          <input type="file" id="svgFile" accept=".svg">
+          <div id="dropArea">Drag and drop SVG file here</div>
+          <button id="backButtonSvg">Back</button>
+        </div>
+      </div>
+
+      <div id="main-content" style="display: flex; column-count: 2; height: 100%; width: 100%;">
+        <canvas id="render_canvas" style="height: 100%; width: 100%;"></canvas>
+        <div id="side-panel" style="width:20%; display: flex; flex-direction: column;" >
+          <input id="searchbar" placeholder="Cerca"/>
+        </div>
+      </div>
+</body>
+</html>
