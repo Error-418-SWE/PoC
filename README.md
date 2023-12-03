@@ -1,11 +1,11 @@
-# PoC
+# PoC Silvio (poc_0.1)
 - npm init
 -  Install Parcel by typing the following command: npm install parcel -g
 - Make sure to install dependencies: open project in VSCode -> open command line -> type: npm install
 - per usare dat.gui sevo fare npm install dat.gui (con parcel che non sta runnando)
 - Run Parcel by typing this command: npx parcel ./poc_0.1/src/index.html
 
-# PoC Riccardo
+# PoC Riccardo (poc_0.2_manuale_svg_db)
 ## PoC contente creazione manuale, SVG e conttatto con il database
 Per l'utilizzo si consiglia al momento windows con ambiente WSL (io ho ubuntu), tutto utilizzabile mediante visual studio code.
 Necessario installare node e mysql nell'ambiente.
