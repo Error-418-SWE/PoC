@@ -11,6 +11,7 @@
     <button id="manualCreation">Manual Creation</button>
     <button id="importSvg">Import SVG</button>
 
+    <!--Modale per chiedere le dimensioni manualmente-->
     <div id="modalDimensions" class="modal">
         <div class="modal-content">
           <label for="dimension1">Dimension 1:</label><br>
@@ -24,6 +25,7 @@
         </div>
       </div>
 
+      <!--Modale per l'importazione dei file SVG-->
       <div id="svgModal" class="modal">
         <div class="modal-content">
           <input type="file" id="svgFile" accept=".svg">
@@ -32,6 +34,7 @@
         </div>
       </div>
 
+      <!--Main con canvas di rendering della scena-->
       <div id="main-content" style="display: flex; column-count: 2; height: 100%; width: 100%;">
         <canvas id="render_canvas" style="height: 100%; width: 100%;"></canvas>
         <div id="side-panel" style="width:20%; display: flex; flex-direction: column;" >

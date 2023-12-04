@@ -4,6 +4,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
+    //
+    // richiamo l'endpoint /products del server per ottenere tutti i prodotti e salvarli in un'array
+    //
     let products = [];
     var sidePanel = document.getElementById("side-panel");
     fetch('http://localhost:3000/products')
@@ -12,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             products = data;
             console.log(products);
             products.forEach(element => {
+                //li mostro a sinista, nel side panel
                 var label = document.createElement("label");
                 label.textContent = element["nome"];
                 sidePanel.appendChild(label);
@@ -19,14 +23,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
         })
         .catch(error => console.error('Error:', error));
 
-    //perfectly works
+    //
+    // Creazione della scena
+    //
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
     camera.position.set(0, 0, 500);
     camera.lookAt(0, 0, 0);
 
 
-    // Create a renderer
+    //
+    // Creazione del renderer, in modo che visualizzi tutto nel canavas render_canvas nell'index.html
+    //
     var mainContent = document.getElementById("main-content");
     var canvas = document.getElementById("render_canvas");
     const renderer = new THREE.WebGLRenderer({canvas: canvas});
@@ -34,6 +42,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     renderer.setClearColor("#c9cdd2");
     mainContent.appendChild(renderer.domElement);
 
+    //
+    // Creazione dei controlli per la camera
+    //
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true; // Enable damping (inertia)
     controls.dampingFactor = 0.05; // Damping factor
@@ -43,9 +54,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     controls.minPolarAngle = Math.PI / 2.5; // Minimum polar angle
     controls.maxPolarAngle = Math.PI / 2.5; // Maximum polar angle
 
-    // Load the SVG file
-
-
+    //
+    // Funzione di caricamento del file SVG
+    //
     function loadSVG(filename, filecontent) {
         const loader = new SVGLoader();
         const data = loader.parse(filecontent);
@@ -68,18 +79,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 });
 
                 const mesh = new THREE.Mesh(geometry, material);
-                mesh.rotation.x = -Math.PI / 2; // Rotate the mesh to lie flat
-                mesh.scale.set(0.3, 0.3, 0.3); // Make the SVG bigger
-                group.add(mesh); // Add the mesh to our group
-
-                // Make the first shape non-clickable
-                mesh.userData.clickable = !(i === 0 && j === 0);
+                mesh.rotation.x = -Math.PI / 2; // lo ruota leggermente per farlo sembrare in prospettiva
+                mesh.scale.set(0.3, 0.3, 0.3); // scale serve a ridimensionare l'oggetto
+                group.add(mesh);
             }
         }
 
         console.log(group); // Log the group object
         console.log(paths); // Log the paths array
 
+        // centrare il gruppo nella scena
         const box = new THREE.Box3().setFromObject(group); // Get the bounding box of the group
         group.position.x -= box.getCenter(new THREE.Vector3()).x; // Center the group on the X axis   
         group.position.z -= box.getCenter(new THREE.Vector3()).z; // Center the group on the Y axis   
@@ -91,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 
 
-
+    // javascript per i pulsanti di creazione manuale e importazione SVG
     document.getElementById("manualCreation").addEventListener("click", function() {
         document.getElementById("modalDimensions").style.display = "block";
     });
@@ -108,6 +117,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById("svgModal").style.display = "none";
     });
 
+    //semplice importazione del file mediante esplora risorse
     document.getElementById("svgFile").addEventListener("change", function(e) {
         let file = e.target.files[0];
         let reader = new FileReader();
@@ -115,6 +125,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             loadSVG(file["name"], event.target.result);
         };
         try {
+            // prova a leggere il file e in caso pulisce la scena e chiude la modale
             reader.readAsText(file);
             scene.clear();
             document.getElementById("svgModal").style.display = "none";
@@ -136,6 +147,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     dropArea.addEventListener('drop', handleDrop, false);
 
+    // importazione del file mediante drag and drop
     function handleDrop(e) {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
@@ -154,10 +166,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
     }
 
+    // ricerca dei prodotti NON IMPLEMENTATA
     document.getElementById("searchbar").addEventListener("keyup", function() {
         
     });
 
+    // pulsante per la creazione manuale dell'ambiente, apre la modale per inserire le dimensioni e le recupera
+    // creando un piano
     document.getElementById("submitDimensions").addEventListener("click", function() {
         let width = document.getElementById("dimension1").value;
         let height = document.getElementById("dimension2").value;
@@ -178,6 +193,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
     // Animation loop
+    // serve per far muovere la camera e tutte le animazioni interazioni con la scena
     function animate() {
         requestAnimationFrame(animate);
         controls.update(); // Update the controls
@@ -185,5 +201,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         camera.lookAt(0, 0, 0);
     }
 
+    // Start animation loop
     animate();
 });
