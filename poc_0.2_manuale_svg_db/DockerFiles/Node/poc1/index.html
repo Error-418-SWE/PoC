@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css"> 
     <script type="module" src="./main.js"></script>
-    <title>Document</title>
+    <title>Poc 0.2</title>
 </head>
 <body>
     <button id="manualCreation">Manual Creation</button>
     <button id="importSvg">Import SVG</button>
+    <button id="showPanel">Show Panel</button>
 
     <!--Modale per chiedere le dimensioni manualmente-->
     <div id="modalDimensions" class="modal">
@@ -37,7 +38,10 @@
       <!--Main con canvas di rendering della scena-->
       <div id="main-content" style="display: flex; column-count: 2; height: 100%; width: 100%;">
         <canvas id="render_canvas" style="height: 100%; width: 100%;"></canvas>
-        <div id="side-panel" style="width:20%; display: flex; flex-direction: column;" >
+
+        <!--Pannello laterale con la lista degli oggetti-->
+        <div id="side-panel" style="width:20%; display: none; flex-direction: column;" >
+          <button id="hidePanel">Hide Panel</button>
           <input id="searchbar" placeholder="Cerca"/>
         </div>
       </div>

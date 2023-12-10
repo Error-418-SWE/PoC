@@ -1,3 +1,7 @@
+body{
+  background-color: #FFFDD0;
+}
+
 .modal {
     display: none;
     position: fixed;

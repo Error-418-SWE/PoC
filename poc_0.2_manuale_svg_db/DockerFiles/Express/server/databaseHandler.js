@@ -26,9 +26,7 @@ function connectToDatabase(){
     db.connect((err) => {
     if (err) {
         console.error('Error connecting to MySQL database');
-        throw err;
-    }
-    console.log('Connected to MySQL database');
+    }else console.log('Connected to MySQL database');
 });
 }
 

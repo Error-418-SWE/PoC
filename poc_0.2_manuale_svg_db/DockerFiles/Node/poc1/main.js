@@ -10,18 +10,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
     let products = [];
     var sidePanel = document.getElementById("side-panel");
     fetch('http://localhost:3000/products')
-        .then(response => response.json())
-        .then(data => {
-            products = data;
-            console.log(products);
-            products.forEach(element => {
-                //li mostro a sinista, nel side panel
-                var label = document.createElement("label");
-                label.textContent = element["nome"];
-                sidePanel.appendChild(label);
-            });
-        })
-        .catch(error => console.error('Error:', error));
+    .then(response => response.json())
+    .then(data => {
+        products = data;
+        console.log(products);
+        products.forEach(element => {
+            //li mostro a sinista, nel side panel
+            var label = document.createElement("label");
+            label.textContent = element["nome"];
+            sidePanel.appendChild(label);
+        });
+    })
+    .catch(error => console.error('Error:', error));
 
     //
     // Creazione della scena
@@ -117,6 +117,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.getElementById("svgModal").style.display = "none";
     });
 
+    document.getElementById("showPanel").addEventListener("click", function() {
+        document.getElementById("side-panel").style.display = "flex";
+    });
+
+    document.getElementById("hidePanel").addEventListener("click", function() {
+        document.getElementById("side-panel").style.display = "none";
+    });
+
     //semplice importazione del file mediante esplora risorse
     document.getElementById("svgFile").addEventListener("change", function(e) {
         let file = e.target.files[0];
@@ -168,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     // ricerca dei prodotti NON IMPLEMENTATA
     document.getElementById("searchbar").addEventListener("keyup", function() {
-        
+        let input = document.getElementById("searchbar").value;
     });
 
     // pulsante per la creazione manuale dell'ambiente, apre la modale per inserire le dimensioni e le recupera

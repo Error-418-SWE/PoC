@@ -19,13 +19,12 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Imposto le informazioni di connessione al database
-const HOST_URL = "127.0.0.1";
+const HOST_URL = "db";
 const DB_USER = "db_user";
 const DB_PASSWORD = "root";
 const DB_NAME = "test_swe";
 const DB_PORT = 3306;
 
-// Connessione al database
 DBHandler.setConnectionInformation(HOST_URL, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT);
 DBHandler.connectToDatabase();
 
@@ -33,6 +32,7 @@ DBHandler.connectToDatabase();
 // in questo caso si tratta di un'operazione di get che restituisce tutti i prodotti presenti nel database
 // con endpoint "/products" (vedi main.js riga 9)
 app.get('/products', (req, res) => {
+  // Connessione al database
   const query = 'SELECT * FROM prodotti';
   DBHandler.executeQuery(query)
   .then(results => {
@@ -40,6 +40,7 @@ app.get('/products', (req, res) => {
   }).catch(err => {
     console.error('Error executing query:', err);
     res.status(500).send('Error Executing the query ' + query);
+    throw err;
   });
 });
 
