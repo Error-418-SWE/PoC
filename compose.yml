@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  frontend:
+    build:
+      context: ./web
+      dockerfile: ../web.Dockerfile
+      network: host
+    develop:
+      watch:
+        - path: ./web
+          target: /var/app # WORKDIR in Dockerfile
+          action: sync
+          ignore:
+            - node_modules/
+        - path: ./web/package.json
+          target: /var/app/package.json
+          action: rebuild
+    command: npm start
+    environment:
+      DB_SCHEMA: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: postgres
+    depends_on:
+      - postgres
+    ports:
+      - '3000:3000'
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    restart: on-failure
+    volumes:
+      - addressbook-db:/var/lib/postgresql/data
+
+volumes:
+  addressbook-db:
