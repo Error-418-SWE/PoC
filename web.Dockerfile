@@ -1,6 +1,6 @@
-FROM node:18.16.0-alpine3.17
+FROM node:20-alpine
 
-WORKDIR /var/app
+WORKDIR /var/web
 COPY package.json .
 COPY package-lock.json .
 RUN npm install

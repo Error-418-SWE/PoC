@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   frontend:
+    command: npm run dev
     build:
       context: ./web
       dockerfile: ../web.Dockerfile
@@ -8,14 +9,13 @@ services:
     develop:
       watch:
         - path: ./web
-          target: /var/app # WORKDIR in Dockerfile
+          target: /var/web # WORKDIR in Dockerfile
           action: sync
           ignore:
             - node_modules/
         - path: ./web/package.json
-          target: /var/app/package.json
+          target: /var/web/package.json
           action: rebuild
-    command: npm start
     environment:
       DB_SCHEMA: postgres
       DB_USER: postgres
