@@ -7,8 +7,7 @@ Esplorare la containerizzazione di Node.js e DBMS SQL con Docker.
 ## Funzionamento
 
 1. Clonare la repository in locale e spostarsi nella root del repository;
-1. `docker build . --network=host`
-1. `docker compose up -d`;
+1. `docker compose watch`
 1. L'applicazione è disponibile su [localhost:3000](http://localhost:3000) e la connessione al DB è verificabile [qui](http://localhost:3000/persons/all);
 1. Terminare l'esecuzione con `docker compose down`.
 
