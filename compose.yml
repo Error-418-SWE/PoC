@@ -5,8 +5,9 @@ services:
     build:
       context: ./web
       dockerfile: ../web.Dockerfile
-      network: host
-    develop:
+    networks: 
+      - webnet
+    develop:  
       watch:
         - path: ./web
           target: /var/web # WORKDIR in Dockerfile
@@ -16,26 +17,53 @@ services:
         - path: ./web/package.json
           target: /var/web/package.json
           action: rebuild
-    environment:
-      DB_SCHEMA: postgres
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_HOST: postgres
     depends_on:
       - postgres
+      - express
     ports:
       - '3000:3000'
 
+  express:
+    command: node server.js
+    build:
+      context: ./express
+      dockerfile: ../express.Dockerfile
+    networks: 
+      - webnet
+    develop:
+      watch:
+        - path: ./express/
+          target: /var/express # WORKDIR in Dockerfile
+          action: sync
+          ignore:
+            - node_modules/
+        - path: ./express/package.json
+          target: /var/express/package.json
+          action: rebuild
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '3001:3001'
+
   postgres:
     image: postgres:latest
+    networks: 
+      - webnet
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: db_user
+      POSTGRES_PASSWORD: root
     ports:
       - '5432:5432'
     restart: on-failure
     volumes:
-      - addressbook-db:/var/lib/postgresql/data
+      - ./backup_database.sql:/docker-entrypoint-initdb.d/backup_database.sql
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -d test_swe -U db_user"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
 
-volumes:
-  addressbook-db:
+networks:
+  webnet:
+    driver: bridge
