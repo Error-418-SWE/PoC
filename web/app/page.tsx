@@ -1,101 +1,105 @@
-import Image from 'next/image'
-import styles from './page.module.css'
-import App from './demo';
+"use client";
+import React, { useState } from "react";
+import App from "./demo";
+import NavBar from "./NavBar";
+import ModalSvg from "./modalSvg";
+import SidePanel from "./sidePanel";
+import ModalDatabase from "./modalDatabase";
 
 export default function Home() {
+  const [showModal, setShowModal] = useState(false);
+  const [showDatabaseModal, setShowDatabaseModal] = useState(false);
+  const [manualCreation, setManualCreation] = useState(false);
+  const [fileContent, setFileContent] = useState(null);
+  const [fileName, setFileName] = useState(null);
+  const [showSearchPanel, setShowSearchPanel] = useState(false);
+
+  const showPanel = () => {
+    setShowSearchPanel(true);
+  };
+
+  const hidePanel = () => {
+    setShowSearchPanel(false);
+  };
+
+  const clickSvgButton = () => {
+    setShowModal(true);
+  };
+
+  const hideModal = () => {
+    setShowModal(false);
+  };
+
+  const clickDatabaseButton = () => {
+    console.log("clickDatabaseButton");
+    setShowDatabaseModal(true);
+  };
+
+  const hideDatabaseModal = () => {
+    setShowDatabaseModal(false);
+  };
+
+  const clickManualButton = () => {
+    setManualCreation(true);
+  };
+
+  const notManualCreation = () => {
+    setManualCreation(false); 
+  };
+
+  const tryConnection = () => {
+    // let host =      (document.getElementById("host") as HTMLInputElement)?.value;
+    // let username =  (document.getElementById("username") as HTMLInputElement)?.value;
+    // let password =  (document.getElementById("password") as HTMLInputElement)?.value;
+    // let database =  (document.getElementById("database") as HTMLInputElement)?.value;
+    // let port =      (document.getElementById("port") as HTMLInputElement)?.value;
+    //dbHandler.setConnectionInformation(host, username, password, database, port);
+    //dbHandler.connectToDatabase();
+    hideDatabaseModal();
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p> 
-          Start by Editing
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-
-        <App></App>
-
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main>
+      <NavBar
+        onManualCreation={clickManualButton}
+        onButtonClick={clickSvgButton}
+        onDatabaseButtonClick={clickDatabaseButton}
+        showSearchPanel={showPanel}
+      />
+      <ModalSvg
+        showModal={showModal}
+        hideModal={hideModal}
+        setFileContent={setFileContent}
+        setFileName={setFileName}
+      />
+      <ModalDatabase
+        showDatabaseModal={showDatabaseModal}
+        hideDatabaseModal={hideDatabaseModal}
+        tryConnection={tryConnection} 
+      />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+        }}
+      >
+        <div
+          style={{
+            width: showSearchPanel ? "80vw" : "100vw",
+          }}
+        >
+          <App
+            fileContent={fileContent}
+            fileName={fileName}
+            manualCreation={manualCreation}
+            setManualCreation={notManualCreation}
+          ></App>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            NAPOLI <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-
-          <h2>
-            TEMPLATES <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+        <SidePanel
+          showSearchPanel={showSearchPanel}
+          hideSearchPanel={hidePanel}
+        ></SidePanel>
       </div>
     </main>
-  )
+  );
 }
