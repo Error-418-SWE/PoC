@@ -50,7 +50,7 @@ function App ({fileContent, fileName, manualCreation, setManualCreation}) {
     camera.position.set(0, 0, 60);
     camera.lookAt(0, 0, 0);
     var renderer = new THREE.WebGLRenderer();
-    renderer.setClearColor( "#3f3f3f", 1);
+    renderer.setClearColor( "#F7EFE5", 1);
   
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true; // Enable damping (inertia)

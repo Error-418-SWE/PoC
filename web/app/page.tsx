@@ -48,13 +48,12 @@ export default function Home() {
   };
 
   const tryConnection = () => {
-    // let host =      (document.getElementById("host") as HTMLInputElement)?.value;
-    // let username =  (document.getElementById("username") as HTMLInputElement)?.value;
-    // let password =  (document.getElementById("password") as HTMLInputElement)?.value;
-    // let database =  (document.getElementById("database") as HTMLInputElement)?.value;
-    // let port =      (document.getElementById("port") as HTMLInputElement)?.value;
-    //dbHandler.setConnectionInformation(host, username, password, database, port);
-    //dbHandler.connectToDatabase();
+    let host =      (document.getElementById("host") as HTMLInputElement)?.value;
+    let username =  (document.getElementById("username") as HTMLInputElement)?.value;
+    let password =  (document.getElementById("password") as HTMLInputElement)?.value;
+    let database =  (document.getElementById("database") as HTMLInputElement)?.value;
+    let port =      (document.getElementById("port") as HTMLInputElement)?.value;
+    
     hideDatabaseModal();
   };
 

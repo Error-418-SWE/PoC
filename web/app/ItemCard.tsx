@@ -34,24 +34,24 @@ function ItemCard({id, nome, dimensione, peso}){
         <div style = {{
             display: "grid",
             gridTemplateColumns: "1.5fr 1fr",
-            backgroundColor: "#0f0f0f",
+            backgroundColor: "white",
             borderRadius: "0.5em",
             border: "1px solid white",
             padding: "0.5em",
-            boxShadow: "0px 0px 10px 0px rgba(255,255,255,0.75)",
+            boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
         }}>
             <div style={{
                 display:"grid",
                 gridTemplateColumns: "1fr 1fr",
             }}>
-                <label style={{ color: 'white' }}>ID</label>
-                <label style={{ color: 'white'}}>{id}</label>
-                <label style={{ color: 'white' }}>Nome</label>
-                <label style={{ color: 'white' }}>{nome}</label>
-                <label style={{ color: 'white' }}>Dimensione</label>
-                <label style={{ color: 'white' }}>{dimensione}</label>
-                <label style={{ color: 'white' }}>Peso</label>
-                <label style={{ color: 'white' }}>{peso}</label>
+                <label style={{ color: 'black' }}>ID</label>
+                <label style={{ color: 'black'}}>{id}</label>
+                <label style={{ color: 'black' }}>Nome</label>
+                <label style={{ color: 'black' }}>{nome}</label>
+                <label style={{ color: 'black' }}>Dimensione</label>
+                <label style={{ color: 'black' }}>{dimensione}</label>
+                <label style={{ color: 'black' }}>Peso</label>
+                <label style={{ color: 'black' }}>{peso}</label>
             </div>
             <canvas ref={canvasRef} style={{ width: '100%', height: '100%', borderRadius: "0.5em" }}></canvas>
         </div>

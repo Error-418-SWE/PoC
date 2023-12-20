@@ -10,17 +10,17 @@ body{
 }
 
 button {
-  color: white;
+  color: rgb(255, 255, 255);
   box-shadow: none;
-  background: none;
-  border: solid 3px #242424;
-  background-color: transparent;
   cursor: pointer;
   height: 4em;
   width: 7em;
+  border-radius: 2em;
+  background: none;
+  border: 2px solid #5427ab;
 }
 
 button:hover {
-  background-color: #242424;
+  background-color: #5427ab;
 }
 

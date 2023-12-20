@@ -2,10 +2,13 @@
 
 function NavBar({onManualCreation, onButtonClick, onDatabaseButtonClick, showSearchPanel}) {
     return (
-        <nav style={{   backgroundColor: "#030303",
+        <nav style={{   backgroundColor: "#7743DB",
                         display: "flex", 
                         flexDirection:"row", 
-                        justifyContent: "space-between"
+                        justifyContent: "space-between",
+                        height: "5em",
+                        alignItems: "center",
+                        padding: "0 1em"
                     }}>
 
             <ul style={{    display: "flex", 

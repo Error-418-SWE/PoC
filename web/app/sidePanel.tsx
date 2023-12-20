@@ -18,10 +18,10 @@ function SidePanel({showSearchPanel, hideSearchPanel}){
             display: showSearchPanel ? "flex" : "none",
             flexDirection: "column",
             maxWidth: "40vw",
-            backgroundColor: "#030303",
+            backgroundColor: "#5427ab",
             padding: "1em",
         }}>
-            <button onClick={hideSearchPanel} style={{
+            <button id="closePanelButton" onClick={hideSearchPanel} style={{
                 alignSelf: "flex-end",
             }}>X</button>
             <div style={{
@@ -30,15 +30,32 @@ function SidePanel({showSearchPanel, hideSearchPanel}){
                 flexDirection: "row",
                 columnGap: "1em",
             }}>
-                <input placeholder="search" style={{
+                <input id="searchBar" style={{
                     color: "white",
-                    background: "#030303",
+                    background: "transparent",
                     padding: "0.5em",
                     boxShadow: "none",
                     border: "1px solid white",
-                }}></input>
-                <button>Search</button>
+                    borderRadius: "0.5em",
+                }} placeholder="Search..."></input>
+                <button id="searchButton">Search</button>
             </div>
+            <style jsx>{`
+
+                    #searchBar::placeholder{
+                        color: white;
+                        font-style: italic;
+                    }
+
+                    #closePanelButton:hover{
+                        background-color: #8B0000;
+                        color: white;
+                    }
+                    #searchButton:hover{
+                        background-color: #3c1687;
+                        color: white;
+                    }
+                `}</style>
             <div id="searchResultContainer" style={{
                 marginTop: "1em",
                 display: "flex",
