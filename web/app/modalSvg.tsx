@@ -1,6 +1,6 @@
 "use client";
 
-const ModalSvg = ({showModal, hideModal, setFileContent,setFileName}) => {
+const ModalSvg = ({showModal, hideModal, setFileContent,setFileName, setManualCreation}) => {
 
     const handleFileChange = (event) => {
         event.preventDefault();
@@ -10,8 +10,11 @@ const ModalSvg = ({showModal, hideModal, setFileContent,setFileName}) => {
         reader.onload = (event) => {
             setFileName(file.name);
             setFileContent(event.target.result);
+            setManualCreation(false);
             hideModal();
         };
+
+        event.target.value = null;
     };
 
     const handleDragOver = (event) => {

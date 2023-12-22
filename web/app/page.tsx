@@ -9,9 +9,9 @@ import ModalDatabase from "./modalDatabase";
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [showDatabaseModal, setShowDatabaseModal] = useState(false);
-  const [manualCreation, setManualCreation] = useState(false);
-  const [fileContent, setFileContent] = useState(null);
-  const [fileName, setFileName] = useState(null);
+  var [manualCreation, setManualCreation] = useState(false);
+  var [fileContent, setFileContent] = useState(null);
+  var [fileName, setFileName] = useState(null);
   const [showSearchPanel, setShowSearchPanel] = useState(false);
 
   const showPanel = () => {
@@ -31,7 +31,6 @@ export default function Home() {
   };
 
   const clickDatabaseButton = () => {
-    console.log("clickDatabaseButton");
     setShowDatabaseModal(true);
   };
 
@@ -40,11 +39,9 @@ export default function Home() {
   };
 
   const clickManualButton = () => {
+    setFileName(null);
+    setFileContent(null);
     setManualCreation(true);
-  };
-
-  const notManualCreation = () => {
-    setManualCreation(false); 
   };
 
   const tryConnection = () => {
@@ -70,6 +67,7 @@ export default function Home() {
         hideModal={hideModal}
         setFileContent={setFileContent}
         setFileName={setFileName}
+        setManualCreation={setManualCreation}
       />
       <ModalDatabase
         showDatabaseModal={showDatabaseModal}
@@ -91,7 +89,6 @@ export default function Home() {
             fileContent={fileContent}
             fileName={fileName}
             manualCreation={manualCreation}
-            setManualCreation={notManualCreation}
           ></App>
         </div>
         <SidePanel

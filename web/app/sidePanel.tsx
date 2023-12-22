@@ -7,7 +7,7 @@ function SidePanel({showSearchPanel, hideSearchPanel}){
     
     useEffect(() => {
         if (showSearchPanel) {
-            fetch('http://localhost:3001/products')
+            fetch('/api/products')
                 .then(response => response.json())
                 .then(data => {setItems(data); console.log(data);});
         }

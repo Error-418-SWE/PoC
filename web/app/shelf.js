@@ -10,38 +10,6 @@ export const gridOptions = {
 
 const stuff = ["rasoio elettrico", "televisore", "smartphone", ["televisione, playstation"], ["mouse", "tastiera"]];
 
-// funzione che crea una griglia capace di coprire l'oggetto plane
-function coverGrid(plane, width, depth) {
-    // Create a grid geometry
-    var gridGeometry = new THREE.BufferGeometry();
-
-    var divisionsX = width / gridOptions.GridSize; // Number of grid divisions along the x-axis
-    var divisionsY = depth / gridOptions.GridSize; // Number of grid divisions along the y-axis
-    var sizeX = plane.geometry.parameters.width; // Size of the plane along the x-axis
-    var sizeY = plane.geometry.parameters.height; // Size of the plane along the y-axis
-
-    var vertices = [];
-
-    for (var i = 0; i <= divisionsX; i++) {
-    var x = (i / divisionsX) * sizeX - sizeX / 2;
-    vertices.push(x, -sizeY / 2, 0, x, sizeY / 2, 0);
-    }
-
-    for (var i = 0; i <= divisionsY; i++) {
-    var y = (i / divisionsY) * sizeY - sizeY / 2;
-    vertices.push(-sizeX / 2, y, 0, sizeX / 2, y, 0);
-    }
-
-    gridGeometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
-
-    // Create a material for the grid
-    var gridMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
-
-    // Create a grid mesh
-    var grid = new THREE.LineSegments(gridGeometry, gridMaterial);
-    return grid;
-}
-
 
 //creazione scaffale
 export function createShelf(width, height, depth, planes, columns, orientamento){
@@ -50,7 +18,7 @@ export function createShelf(width, height, depth, planes, columns, orientamento)
     if (columns > width)
         columns = width;
     const boxGeometry = new THREE.BoxGeometry(width, height, depth);
-    const boxMaterial = new THREE.MeshBasicMaterial({color: ancorObjectColor, transparent:true, opacity:0.01});
+    const boxMaterial = new THREE.MeshBasicMaterial({color: ancorObjectColor, transparent:true, opacity:0.4});
     const shelf = new THREE.Mesh(boxGeometry, boxMaterial);
     const edges = new THREE.EdgesGeometry(boxGeometry); 
     const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xA9A9A9, linewidth: 2})); 
@@ -64,12 +32,6 @@ export function createShelf(width, height, depth, planes, columns, orientamento)
         const plane = new THREE.Mesh(planeGeometry, planeMaterial);
         plane.name = "plane";
         plane.rotation.x = Math.PI / 2;
-
-        if(gridOptions.GridSize > 0){
-            const grid = coverGrid(plane, width, depth);
-            grid.name = "grid";
-            plane.add(grid);    
-        }
         
         shelf.add(plane);
         plane.position.y = yPlane;
