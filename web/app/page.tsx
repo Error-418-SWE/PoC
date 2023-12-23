@@ -5,6 +5,7 @@ import NavBar from "./NavBar";
 import ModalSvg from "./modalSvg";
 import SidePanel from "./sidePanel";
 import ModalDatabase from "./modalDatabase";
+import SplashScreen from "./splashScreen";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -45,17 +46,21 @@ export default function Home() {
   };
 
   const tryConnection = () => {
-    let host =      (document.getElementById("host") as HTMLInputElement)?.value;
-    let username =  (document.getElementById("username") as HTMLInputElement)?.value;
-    let password =  (document.getElementById("password") as HTMLInputElement)?.value;
-    let database =  (document.getElementById("database") as HTMLInputElement)?.value;
-    let port =      (document.getElementById("port") as HTMLInputElement)?.value;
-    
+    let host = (document.getElementById("host") as HTMLInputElement)?.value;
+    let username = (document.getElementById("username") as HTMLInputElement)
+      ?.value;
+    let password = (document.getElementById("password") as HTMLInputElement)
+      ?.value;
+    let database = (document.getElementById("database") as HTMLInputElement)
+      ?.value;
+    let port = (document.getElementById("port") as HTMLInputElement)?.value;
+
     hideDatabaseModal();
   };
 
   return (
     <main>
+      <SplashScreen/>
       <NavBar
         onManualCreation={clickManualButton}
         onButtonClick={clickSvgButton}
@@ -72,7 +77,7 @@ export default function Home() {
       <ModalDatabase
         showDatabaseModal={showDatabaseModal}
         hideDatabaseModal={hideDatabaseModal}
-        tryConnection={tryConnection} 
+        tryConnection={tryConnection}
       />
       <div
         style={{

@@ -17,7 +17,12 @@ function setGridSize(value: number = 0) {
       gridHelper.dispose();
       plane.remove(gridHelper);
     }
-    gridHelper = new THREE.GridHelper(dimension.x, numberOfGridRows);
+    gridHelper = new THREE.GridHelper(Math.max(dimension.x,dimension.y), numberOfGridRows);
+    if(dimension.x > dimension.y)
+      gridHelper.scale.z = dimension.y/dimension.x;
+    else
+      gridHelper.scale.x = dimension.x/dimension.y;
+
     gridHelper.divisions = numberOfGridRows;
     gridHelper.name = "ground";
     gridHelper.rotation.x = -0.5 * Math.PI;
