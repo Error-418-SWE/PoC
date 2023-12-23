@@ -112,8 +112,15 @@ function createGroundWithSVG(fileContent: string) {
   return ground;
 }
 
+function setGroundColor(color: number) {
+  if (plane) {
+    plane.material.color.setHex(color);
+  }
+}
+
 export default {
   createBasicGround,
   createGroundWithSVG,
   setGridSize,
+  setGroundColor,
 };

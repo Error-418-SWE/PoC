@@ -26,7 +26,7 @@ function createCamera() {
 }
 
 function createRenderer() {
-  const renderer = new THREE.WebGLRenderer();
+  const renderer = new THREE.WebGLRenderer({antialias: true});
   renderer.setClearColor("#F7EFE5", 1);
   renderer.setSize(window.innerWidth, window.innerHeight);
   return renderer;
