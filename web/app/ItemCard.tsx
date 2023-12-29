@@ -1,34 +1,6 @@
 "use client";
-import * as Three from 'three';
-import { useEffect, useRef } from 'react';
-import { render } from 'react-dom';
 
 function ItemCard({id, nome, dimensione, peso}){
-
-    const canvasRef = useRef();
-
-    useEffect(() => {
-        const scene = new Three.Scene();
-        const camera = new Three.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new Three.WebGLRenderer({ canvas: canvasRef.current });
-        renderer.setClearColor("#3f3f3f", 1);
-
-        const geometry = new Three.BoxGeometry(2,2,2);
-        const material = new Three.MeshBasicMaterial({ color: 0x00ff00 });
-        const cube = new Three.Mesh(geometry, material);
-        scene.add(cube);
-
-        camera.position.z = 5;
-
-        const animate = function () {
-            requestAnimationFrame(animate);
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
-            renderer.render(scene, camera);
-        };
-
-        animate();
-    }, []);
 
     return (
         <div style = {{
@@ -53,7 +25,6 @@ function ItemCard({id, nome, dimensione, peso}){
                 <label style={{ color: 'black' }}>Peso</label>
                 <label style={{ color: 'black' }}>{peso}</label>
             </div>
-            <canvas ref={canvasRef} style={{ width: '100%', height: '100%', borderRadius: "0.5em" }}></canvas>
         </div>
     );
 

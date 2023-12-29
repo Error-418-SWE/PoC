@@ -12,7 +12,6 @@ import {
 
 import groundHandler from "./ground";
 
-
 function createCamera() {
   const camera = new THREE.PerspectiveCamera(
     75,
@@ -26,7 +25,7 @@ function createCamera() {
 }
 
 function createRenderer() {
-  const renderer = new THREE.WebGLRenderer({antialias: true});
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setClearColor("#ad9372", 1);
   renderer.setSize(window.innerWidth, window.innerHeight);
   return renderer;
@@ -75,6 +74,7 @@ var ancoredObject: any;
 const mousePosition = new THREE.Vector2();
 const intersectionPoint = new THREE.Vector3();
 const raycaster = new THREE.Raycaster();
+let INTERSECTED = null;
 
 let isGridOn = true;
 let intersects;
@@ -87,7 +87,23 @@ function removeMouseAnchor(scene: THREE.Scene, ancoredObject: any) {
   scene.remove(ancoredObject);
 }
 
-function App({ fileContent, fileName, manualCreation }) {
+function openBinInformation(e) {
+  var rect = renderer.domElement.getBoundingClientRect();
+  mousePosition.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  mousePosition.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+  raycaster.setFromCamera(mousePosition, camera);
+  intersects = raycaster.intersectObjects(scene.children);
+  for (let item of intersects) {
+    if (item.object.name == "bin") {
+      alert(
+        item.object.userData.content ? item.object.userData.content : "VUOTO"
+      );
+      return;
+    }
+  }
+}
+
+function App({ fileContent, fileName, manualCreation, shelfDimensions }) {
   const mountRef = useRef(null);
 
   //+++++++++++++++++++++++++++++++++++UTILITIES+++++++++++++++++++++++++++++++++++++++++++++++
@@ -153,7 +169,7 @@ function App({ fileContent, fileName, manualCreation }) {
     //gui per scaffale
     if (gui) gui.destroy();
     gui = new dat.GUI();
-
+    /*
     const boxDimensions = {
       larghezza: 2,
       altezza: 2,
@@ -179,8 +195,8 @@ function App({ fileContent, fileName, manualCreation }) {
         shelf.position.y += shelf.geometry.parameters.height / 2;
         scene.add(shelf);
       },
-    };
-
+    };*/
+    /*
     const folder = gui.addFolder("Dimensioni Scaffale");
     folder.add(boxDimensions, "larghezza", 1, 10).step(1).name("Larghezza");
     folder.add(boxDimensions, "altezza", 1, 10).step(1).name("Altezza");
@@ -191,11 +207,11 @@ function App({ fileContent, fileName, manualCreation }) {
       .add(boxDimensions, "orientamento", ["orizzontale", "verticale"])
       .name("Orientamento");
     folder.open();
-    gui.add(obj, "Crea scaffale");
+    gui.add(obj, "Crea scaffale");*/
 
     var gridSize = gui
       .add({ GridSize: 1 }, "GridSize", 0, 1)
-      .step(0.1)
+      .step(0.5)
       .name("Grid Size")
       .onChange(function (value: any) {
         groundHandler.setGridSize(value);
@@ -205,7 +221,9 @@ function App({ fileContent, fileName, manualCreation }) {
 
   useEffect(() => {
     camera = createCamera();
+    if (renderer) renderer.dispose();
     renderer = createRenderer();
+    if (controls) controls.dispose();
     controls = createControls(camera, renderer);
 
     var animate = function () {
@@ -213,7 +231,6 @@ function App({ fileContent, fileName, manualCreation }) {
       controls.update();
       renderer.render(scene, camera);
     };
-    
 
     animate();
 
@@ -221,6 +238,16 @@ function App({ fileContent, fileName, manualCreation }) {
       (mountRef.current as HTMLElement).appendChild(renderer.domElement);
     }
 
+    return () => {
+      if (mountRef.current) {
+        if (mountRef.current as HTMLElement) {
+          (mountRef.current as HTMLElement).removeChild(renderer.domElement);
+        }
+      }
+    };
+  });
+
+  useEffect(() => {
     // se si preme backspace, canc, esc o il tasto destro del mouse viene rimossa l'ancora
     window.addEventListener("keydown", function (e) {
       if (notPlaced) {
@@ -240,8 +267,10 @@ function App({ fileContent, fileName, manualCreation }) {
 
     // allo spostamento del mouse:
     window.addEventListener("mousemove", function (e) {
-      mousePosition.x = (e.clientX / window.innerWidth) * 2 - 1;
-      mousePosition.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      var rect = renderer.domElement.getBoundingClientRect();
+      mousePosition.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mousePosition.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
       if (notPlaced) {
         raycaster.setFromCamera(mousePosition, camera);
         intersects = raycaster.intersectObjects(scene.children);
@@ -254,31 +283,17 @@ function App({ fileContent, fileName, manualCreation }) {
 
     window.addEventListener("mousedown", function () {
       if (notPlaced && ancoredObject) {
-        console.log("mouse down");
         if (!checkCollision(scene, ancoredObject)) {
-          console.log("collisione");
           raycaster.setFromCamera(mousePosition, camera);
           intersects = raycaster.intersectObjects(scene.children);
           intersects.forEach(function (intersect) {
             if (intersect.object.name === "ground") {
-              console.log("ground toccato");
               const shelf = ancoredObject.clone();
               scene.add(shelf);
               shelf.material.visible = false;
               removeMouseAnchor(scene, ancoredObject);
             }
           });
-        }
-      }
-    });
-
-    window.addEventListener("dblclick", function () {
-      raycaster.setFromCamera(mousePosition, camera);
-      intersects = raycaster.intersectObjects(scene.children);
-      for (let item of intersects) {
-        if (item.object.name == "bin" && !notPlaced) {
-          alert(item.object.userData.content);
-          break;
         }
       }
     });
@@ -291,18 +306,36 @@ function App({ fileContent, fileName, manualCreation }) {
 
     window.addEventListener("resize", onWindowResize, false);
 
+    window.addEventListener("dblclick", openBinInformation);
     return () => {
-      if (mountRef.current) {
-        if (mountRef.current as HTMLElement) {
-          (mountRef.current as HTMLElement).removeChild(renderer.domElement);
-        }
-      }
+      window.removeEventListener("dblclick", openBinInformation);
     };
-  });
+  }, []);
 
   useEffect(() => {
     if (manualCreation || fileContent != null) {
-      console.log("ECCOMI QUI");
+      if (shelfDimensions != null) {
+        const shelf = createShelf(
+          shelfDimensions.larghezza,
+          shelfDimensions.altezza,
+          shelfDimensions.profondita,
+          shelfDimensions.piani,
+          shelfDimensions.colonne,
+          shelfDimensions.orientamento,
+          true
+        );
+        notPlaced = true;
+        ancoredObject = shelf;
+        shelf.position.copy(getMouse3DPos());
+        shelf.position.y += shelf.geometry.parameters.height / 2;
+        scene.add(shelf);
+      }
+    }
+  }, [shelfDimensions]);
+
+  useEffect(() => {
+    if (manualCreation || fileContent != null) {
+      document.getElementById("btnShelf").style.display = "block";
       scene.clear();
 
       ground = manualCreation

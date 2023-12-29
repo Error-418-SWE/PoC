@@ -6,6 +6,7 @@ import ModalSvg from "./modalSvg";
 import SidePanel from "./sidePanel";
 import ModalDatabase from "./modalDatabase";
 import SplashScreen from "./splashScreen";
+import ModalShelf from "./modalShelf";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -14,6 +15,20 @@ export default function Home() {
   var [fileContent, setFileContent] = useState(null);
   var [fileName, setFileName] = useState(null);
   const [showSearchPanel, setShowSearchPanel] = useState(false);
+  const [showShelfModal, setShowShelfModal] = useState(false);
+  const [shelfDimensions, setShelfDimensions] = useState({
+    width: 2,
+    height: 2,
+    depth: 2,
+    planes: 2,
+    columns: 2,
+    orientamento: "orizzontale",
+    toPopolate: false,
+  });
+
+  const hideShelfModal = () => {
+    setShowShelfModal(false);
+  };
 
   const showPanel = () => {
     setShowSearchPanel(true);
@@ -60,7 +75,7 @@ export default function Home() {
 
   return (
     <main>
-      <SplashScreen/>
+      <SplashScreen />
       <NavBar
         onManualCreation={clickManualButton}
         onButtonClick={clickSvgButton}
@@ -79,6 +94,21 @@ export default function Home() {
         hideDatabaseModal={hideDatabaseModal}
         tryConnection={tryConnection}
       />
+      <ModalShelf 
+        showShelfModal={showShelfModal} 
+        hideShelfModal={hideShelfModal} 
+        setShelfDimensions={setShelfDimensions}
+      />
+      
+      <button id="btnShelf"style={{
+        position: "fixed",
+        bottom: "2%",
+        left: "2%",
+        display: "none"
+      }}
+      onClick={() => setShowShelfModal(true)}
+      >Add Shelf</button>
+
       <div
         style={{
           display: "flex",
@@ -94,6 +124,7 @@ export default function Home() {
             fileContent={fileContent}
             fileName={fileName}
             manualCreation={manualCreation}
+            shelfDimensions={shelfDimensions}
           ></App>
         </div>
         <SidePanel

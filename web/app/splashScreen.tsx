@@ -9,7 +9,12 @@ import {
   createShelf,
 } from "./shelf";
 
-export default function SplashScreen() {
+var renderer: THREE.Rendere;
+var controls: OrbitControls;
+
+import React from "react";
+
+export default function SplashScreen(): React.JSX.Element {
   useEffect(() => {
     var canvas = document.getElementById("canvas_sample") as HTMLCanvasElement;
 
@@ -51,8 +56,8 @@ export default function SplashScreen() {
 
     const scene = new THREE.Scene();
     const camera = createCamera();
-    const renderer = createRenderer();
-    const controls = createControls(camera, renderer);
+    renderer = createRenderer();
+    controls = createControls(camera, renderer);
 
     const ground = groundHandler.createBasicGround();
     groundHandler.setGroundColor(0xffffff);
@@ -61,7 +66,7 @@ export default function SplashScreen() {
 
     for (var i = 0; i < 3; i++) {
       for (var j = 0; j < 3; j++) {
-        var shelf = createShelf(5, (i + 2) * 2, 6, 5, 5, "orrizzontale");
+        var shelf = createShelf(5, (i + 2) * 2, 6, 5, 5, "orrizzontale", true);
         shelf.scale.set(1.8, 1.8, 1.8);
         shelf.position.set(20 * (i - 1), (i + 2) * 2, 20 * (j - 1));
         shelf.material.visible = false;
@@ -81,7 +86,7 @@ export default function SplashScreen() {
 
     animate();
   });
-
+ 
   return (
     <div
       id="splashScreen"
@@ -94,8 +99,11 @@ export default function SplashScreen() {
         width: "100%",
         backgroundColor: "#f5f5f5",
         position: "absolute",
+        zIndex: 1,
       }}
       onClick={function () {
+        renderer.dispose();
+        controls.dispose();
         document.getElementById("splashScreen").style.display = "none";
       }}
     >
