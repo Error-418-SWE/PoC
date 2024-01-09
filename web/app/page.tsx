@@ -90,7 +90,7 @@ export default function Home() {
         setManualCreation={setManualCreation}
       />
       <ModalDatabase
-        showDatabaseModal={showDatabaseModal}
+        showDatabaseModal={showDatabaseModal} 
         hideDatabaseModal={hideDatabaseModal}
         tryConnection={tryConnection}
       />

@@ -11,6 +11,8 @@ import {
 
 var renderer: THREE.Rendere;
 var controls: OrbitControls;
+var scene: THREE.Scene;
+var animating = true;
 
 import React from "react";
 
@@ -54,7 +56,7 @@ export default function SplashScreen(): React.JSX.Element {
       return controls;
     }
 
-    const scene = new THREE.Scene();
+    scene = new THREE.Scene();
     const camera = createCamera();
     renderer = createRenderer();
     controls = createControls(camera, renderer);
@@ -76,6 +78,7 @@ export default function SplashScreen(): React.JSX.Element {
     scene.add(ground);
 
     const animate = function () {
+      if(!animating) return; 
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
       controls.update();
@@ -85,7 +88,7 @@ export default function SplashScreen(): React.JSX.Element {
     };
 
     animate();
-  });
+  }, []);
  
   return (
     <div
@@ -102,6 +105,8 @@ export default function SplashScreen(): React.JSX.Element {
         zIndex: 1,
       }}
       onClick={function () {
+        animating = false;
+        scene.clear();
         renderer.dispose();
         controls.dispose();
         document.getElementById("splashScreen").style.display = "none";

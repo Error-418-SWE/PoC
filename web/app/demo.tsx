@@ -245,7 +245,7 @@ function App({ fileContent, fileName, manualCreation, shelfDimensions }) {
         }
       }
     };
-  });
+  }, []);
 
   useEffect(() => {
     // se si preme backspace, canc, esc o il tasto destro del mouse viene rimossa l'ancora

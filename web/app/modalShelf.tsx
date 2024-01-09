@@ -6,13 +6,14 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { createShelf } from "./shelf";
 
 export var shelf;
-var scene;
-var camera;
-var renderer;
-var controls;
+var scene = null;
+var camera = null;
+var renderer = null;
+var controls = null;
 
 const ModalShelf = ({ showShelfModal, hideShelfModal, setShelfDimensions }) => {
   useEffect(() => {
+    console.log("modalShelf");
     var canvas = document.getElementById("currentShelf") as HTMLCanvasElement;
 
     function createCamera() { 
@@ -51,13 +52,12 @@ const ModalShelf = ({ showShelfModal, hideShelfModal, setShelfDimensions }) => {
 
       return controls;
     }
-;
+
     scene = new THREE.Scene();
     camera = createCamera();
-    if (renderer) renderer.dispose();
     renderer = createRenderer();
-    if (controls) controls.dispose();
     controls = createControls(camera, renderer);
+
 
     function updateShelf() {
       scene.clear();
@@ -180,6 +180,8 @@ const ModalShelf = ({ showShelfModal, hideShelfModal, setShelfDimensions }) => {
           </button>
           <button style={{ color: "black" }} onClick={
             function () {
+              renderer.dispose();
+              controls.dispose();
               setShelfDimensions({
                 altezza: document.getElementById("sldAltezza")?.value,
                 larghezza: document.getElementById("sldLarghezza")?.value,
