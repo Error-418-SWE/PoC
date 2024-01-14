@@ -10,6 +10,7 @@ var scene = null;
 var camera = null;
 var renderer = null;
 var controls = null;
+var animating = false;
 
 const ModalShelf = ({ showShelfModal, hideShelfModal, setShelfDimensions }) => {
   useEffect(() => {
@@ -180,8 +181,6 @@ const ModalShelf = ({ showShelfModal, hideShelfModal, setShelfDimensions }) => {
           </button>
           <button style={{ color: "black" }} onClick={
             function () {
-              renderer.dispose();
-              controls.dispose();
               setShelfDimensions({
                 altezza: document.getElementById("sldAltezza")?.value,
                 larghezza: document.getElementById("sldLarghezza")?.value,
