@@ -6,7 +6,7 @@ services:
       context: ./web
       dockerfile: ../web.Dockerfile
     networks: 
-      - webnet
+      - webnetss
     develop:  
       watch:
         - path: ./web
@@ -19,32 +19,8 @@ services:
           action: rebuild
     depends_on:
       - postgres
-      - express
     ports:
       - '3000:3000'
-
-  express:
-    command: node server.js
-    build:
-      context: ./express
-      dockerfile: ../express.Dockerfile
-    networks: 
-      - webnet
-    develop:
-      watch:
-        - path: ./express/
-          target: /var/express # WORKDIR in Dockerfile
-          action: sync
-          ignore:
-            - node_modules/
-        - path: ./express/package.json
-          target: /var/express/package.json
-          action: rebuild
-    depends_on:
-      postgres:
-        condition: service_healthy
-    ports:
-      - '3001:3001'
 
   postgres:
     image: postgres:latest
