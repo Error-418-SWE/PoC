@@ -1,4 +1,5 @@
 import React from "react";
+import FileUploadModal from "./ModalSVG";
 
 class AlertButtons extends React.Component {
   handleButtonClick = (buttonNumber) => {
@@ -8,9 +9,9 @@ class AlertButtons extends React.Component {
   render() {
     return (
       <div>
-        <button onClick={() => this.handleButtonClick(1)}>Pulsante 1</button>
-        <button onClick={() => this.handleButtonClick(2)}>Pulsante 2</button>
-        <button onClick={() => this.handleButtonClick(3)}>Pulsante 3</button>
+        <button onClick={() => this.handleButtonClick(1)}>Dimensioni</button>
+        <FileUploadModal />
+        <button onClick={() => this.handleButtonClick(3)}>Ricerca</button>
       </div>
     );
   }
