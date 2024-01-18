@@ -1,5 +1,7 @@
 import React from "react";
 import FileUploadModal from "./ModalSVG";
+import Sidebar from "./Sidebar";
+import "./AlertButton.css";
 
 class AlertButtons extends React.Component {
   handleButtonClick = (buttonNumber) => {
@@ -8,10 +10,9 @@ class AlertButtons extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="buttons">
         <button onClick={() => this.handleButtonClick(1)}>Dimensioni</button>
         <FileUploadModal />
-        <button onClick={() => this.handleButtonClick(3)}>Ricerca</button>
       </div>
     );
   }
