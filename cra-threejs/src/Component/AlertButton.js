@@ -1,6 +1,6 @@
 import React from "react";
 import FileUploadModal from "./ModalSVG";
-import Sidebar from "./Sidebar";
+
 import "./AlertButton.css";
 
 class AlertButtons extends React.Component {
