@@ -5,9 +5,9 @@ services:
     build:
       context: ./web
       dockerfile: ../web.Dockerfile
-    networks: 
-      - webnetss
-    develop:  
+    networks:
+      - webnet
+    develop:
       watch:
         - path: ./web
           target: /var/web # WORKDIR in Dockerfile
@@ -24,7 +24,7 @@ services:
 
   postgres:
     image: postgres:latest
-    networks: 
+    networks:
       - webnet
     environment:
       POSTGRES_USER: db_user
